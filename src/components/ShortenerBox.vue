@@ -36,7 +36,11 @@
         <div v-if="shortenedLink && !hasRequestError">
           <div class="bg-gray-100 border-2 rounded-lg px-4 py-2 mt-5 flex justify-between items-center">
             {{ shortenedLink }}
-            <span class="text-blue-600 hover:text-underline cursor-pointer">Copy</span>
+            <span
+              class="text-blue-600 hover:text-underline cursor-pointer"
+            >
+              Copy
+            </span>
           </div>
           <div
             class="mt-4 text-base text-slate-400 hover:text-slate-600 cursor-pointer flex justify-center align-center"
@@ -62,7 +66,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import axios from "../services/axios"
+import axios from '../services/axios'
 
 const url = ref('')
 const shortenedLink = ref('')

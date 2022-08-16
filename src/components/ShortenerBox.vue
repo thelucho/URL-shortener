@@ -89,7 +89,7 @@ const shorten = async () => {
     url.value = ''
     shortenedLink.value = data.link
     loading.value = !loading.value
-  } catch {
+  } catch (error) {
     console.error(error)
     hasRequestError.value = true
   }

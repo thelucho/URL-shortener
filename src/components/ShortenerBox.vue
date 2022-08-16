@@ -95,8 +95,13 @@ const shorten = async () => {
   }
 }
 
-const copyUrl = () => {
+const copyUrl = async () => {
   copied.value = true
+  try {
+    await navigator.clipboard.writeText(shortenedLink.value);
+  } catch($e) {
+    console.error($e);
+  }
 }
 
 const clearResult = async () => {

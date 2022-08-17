@@ -34,16 +34,7 @@
           <span class="sr-only">Loading...</span>
         </div>
         <div v-if="shortenedLink && !hasRequestError">
-          <div class="bg-gray-100 border-2 rounded-lg px-4 py-2 mt-5 flex justify-between items-center">
-            {{ shortenedLink }}
-            <span
-              class="text-blue-600 hover:underline cursor-pointer"
-              :class="{ 'text-green-600 hover:no-underline': copied }"
-              @click="copyUrl"
-            >
-              {{ copyStatus }}
-            </span>
-          </div>
+          <shortLink :shortenedLink="shortenedLink" :copied="copied" />
           <div
             class="mt-4 text-base text-slate-400 hover:text-slate-600 cursor-pointer flex justify-center align-center"
             @click="clearResult"
@@ -69,19 +60,18 @@
 <script setup>
 import { computed, ref } from 'vue'
 import axios from '../services/axios'
+import shortLink from './ShortLink.vue'
 
 const url = ref('')
 const shortenedLink = ref('')
 const hasRequestError = ref(false)
 const loading = ref(false)
 const myinput = ref(null)
-const copied = ref(false)
 
 const shorten = async () => {
   try {
     loading.value = !loading.value
     hasRequestError.value = false
-    copied.value = false
     
     const { data } = await axios.post('/shorten', {
       long_url: url.value.trim()
@@ -96,22 +86,11 @@ const shorten = async () => {
   }
 }
 
-const copyUrl = async () => {
-  copied.value = true
-  try {
-    await navigator.clipboard.writeText(shortenedLink.value);
-  } catch($e) {
-    console.error($e);
-  }
-}
-
 const clearResult = async () => {
   url.value = ''
   shortenedLink.value = ''
   myinput.value.focus()
 }
-
-const copyStatus = computed(() => copied.value === true ? 'Copied' : 'Copy')
 </script>
 
 <style scoped>

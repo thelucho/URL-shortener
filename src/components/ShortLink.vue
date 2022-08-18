@@ -18,9 +18,8 @@ const props = defineProps({
   shortenedLink: String
 })
 
-
-
 const copied = ref(false)
+const copyStatus = computed(() => copied.value === true ? 'Copied' : 'Copy')
 
 const copyUrl = async () => {
   copied.value = true
@@ -30,8 +29,6 @@ const copyUrl = async () => {
     console.error($e);
   }
 }
-
-const copyStatus = computed(() => copied.value === true ? 'Copied' : 'Copy')
 
 onUnmounted(() => copied.value === false)
 </script>

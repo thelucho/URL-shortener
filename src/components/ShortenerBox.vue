@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-2xl border shadow-x1 p-10 max-w-lg">
+  <div class="bg-white antialised rounded-2xl border shadow-x1 p-10 max-w-lg">
     <div class="flex flex-col items-center space-y-4">
       <Header />
       <form @submit.prevent="shorten">
@@ -31,7 +31,17 @@
         </p>
       </div>
     </div>
+
+    <SidebarHistory :class="{ 'active': isSidebarOpen }" />
   </div>
+
+  <button
+    class="rounded px-4 py-2 text-sm border-2 border-slate-300 text-slate-400 hover:text-slate-500 hover:border-slate-400 active:border-slate-400 focus:outline-none duration-300 mt-8"
+    @click="isSidebarOpen = !isSidebarOpen"
+  >
+    {{ textOpenSidebar }} history
+  </button>
+
   <Footer />
 </template>
 
@@ -44,12 +54,14 @@ import Footer from './Footer.vue'
 import Header from './Header.vue'
 import Loading from './Loading.vue'
 import ShortLink from './ShortLink.vue'
+import SidebarHistory from './SidebarHistory.vue'
 
 const url = ref('')
 const shortenedLink = ref('')
 const hasRequestError = ref(false)
 const loading = ref(false)
 const myinput = ref(null)
+const isSidebarOpen = ref(false)
 
 const shorten = async () => {
   try {
@@ -68,6 +80,10 @@ const shorten = async () => {
     hasRequestError.value = true
   }
 }
+
+const textOpenSidebar = computed(() => {
+  return isSidebarOpen.value ? 'Close' : 'View'
+})
 
 const clearResult = async () => {
   url.value = ''

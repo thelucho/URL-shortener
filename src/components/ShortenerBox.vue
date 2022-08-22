@@ -36,17 +36,28 @@
   </div>
 
   <button
-    class="rounded px-4 py-2 text-sm border-2 border-slate-300 text-slate-400 hover:text-slate-500 hover:border-slate-400 active:border-slate-400 focus:outline-none duration-300 mt-8"
+    class="rounded px-4 py-2 text-sm border-2 border-slate-300 text-slate-400 hover:text-slate-500 hover:border-slate-400 active:border-slate-400  duration-300 mt-8"
     @click="isSidebarOpen = !isSidebarOpen"
   >
     {{ textOpenSidebar }} history
   </button>
 
+  <!--
+  <ul>
+    <li v-for="link in historyLink" :key="link">
+      OLD: {{ link.old }} <br>
+      NEW: {{ link.new }}
+    </li>
+  </ul>
+
+  <pre>{{ historyLink }}</pre>
+  -->
+
   <Footer />
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import axios from '../services/axios'
 
 import ClearButton from './ClearButton.vue'
@@ -63,6 +74,9 @@ const loading = ref(false)
 const myinput = ref(null)
 const isSidebarOpen = ref(false)
 
+let historyLink = []
+historyLink = JSON.parse(localStorage.getItem('history'))
+
 const shorten = async () => {
   try {
     loading.value = !loading.value
@@ -72,6 +86,8 @@ const shorten = async () => {
       long_url: url.value.trim()
     })
 
+    saveToLocalStorage(url.data, data.link)
+
     url.value = ''
     shortenedLink.value = data.link
     loading.value = !loading.value
@@ -79,6 +95,19 @@ const shorten = async () => {
     console.error(error)
     hasRequestError.value = true
   }
+}
+
+const saveToLocalStorage = (oldLink, newLink) => {
+
+  let links = {
+    "old": oldLink,
+    "new": newLink
+  }
+
+  historyLink.push(links)
+  localStorage.setItem("history", JSON.stringify(historyLink));
+
+  console.log(historyLink)
 }
 
 const textOpenSidebar = computed(() => {

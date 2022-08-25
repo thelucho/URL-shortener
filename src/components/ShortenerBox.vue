@@ -32,7 +32,10 @@
       </div>
     </div>
 
-    <SidebarHistory :class="{ 'active': isSidebarOpen }" />
+    <SidebarHistory
+      :historyList="historyLink"
+      :class="{ 'active': isSidebarOpen }"
+    />
   </div>
 
   <button
@@ -41,17 +44,6 @@
   >
     {{ textOpenSidebar }} history
   </button>
-
-  <!--
-  <ul>
-    <li v-for="link in historyLink" :key="link">
-      OLD: {{ link.old }} <br>
-      NEW: {{ link.new }}
-    </li>
-  </ul>
-
-  <pre>{{ historyLink }}</pre>
-  -->
 
   <Footer />
 </template>
@@ -74,8 +66,8 @@ const loading = ref(false)
 const myinput = ref(null)
 const isSidebarOpen = ref(false)
 
-let historyLink = []
-historyLink = JSON.parse(localStorage.getItem('history'))
+let historyLink = new Array()
+historyLink = JSON.parse(localStorage.getItem('history')) || []
 
 const shorten = async () => {
   try {
@@ -86,11 +78,12 @@ const shorten = async () => {
       long_url: url.value.trim()
     })
 
-    saveToLocalStorage(url.data, data.link)
+    saveToLocalStorage(url.value, data.link)
 
     url.value = ''
     shortenedLink.value = data.link
     loading.value = !loading.value
+    isSidebarOpen.value = false
   } catch (error) {
     console.error(error)
     hasRequestError.value = true
@@ -98,16 +91,8 @@ const shorten = async () => {
 }
 
 const saveToLocalStorage = (oldLink, newLink) => {
-
-  let links = {
-    "old": oldLink,
-    "new": newLink
-  }
-
-  historyLink.push(links)
+  historyLink.push({ old: oldLink, new: newLink })
   localStorage.setItem("history", JSON.stringify(historyLink));
-
-  console.log(historyLink)
 }
 
 const textOpenSidebar = computed(() => {

@@ -34,7 +34,8 @@
 
     <SidebarHistory
       :historyList="historyLink"
-      :class="{ 'active': isSidebarOpen }"
+      :isSidebarOpen="isSidebarOpen"
+      @changeStatus="changeSidebarStatus()"
     />
   </div>
 
@@ -49,7 +50,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import axios from '../services/axios'
 
 import ClearButton from './ClearButton.vue'
@@ -103,5 +104,9 @@ const clearResult = async () => {
   url.value = ''
   shortenedLink.value = ''
   myinput.value.focus()
+}
+
+const changeSidebarStatus = () => {
+  isSidebarOpen.value = false
 }
 </script>

@@ -1,8 +1,15 @@
 <template>
   <section
-    class="fixed inset-y-0 right-0 w-1/4 bg-white border-l border-indigo-100 rounded-l-3xl sidebar"
+    class="fixed inset-y-0 right-0 md:w-full lg:w-1/4 bg-white border-l border-indigo-100 rounded-l-3xl sidebar"
+    :class="{ 'active': isSidebarOpen }"
   >
-    <div class="px-4 py-10">
+    <div class="px-4 md:py-5 lg:py-10">
+      <button
+        class="lg:hidden rounded px-4 py-2 mb-5 text-sm border-2 border-slate-300 text-slate-400 hover:text-slate-500 hover:border-slate-400 active:border-slate-400  duration-300 mt-8"
+        @click="$emit('changeStatus')"
+      >
+        Close history
+      </button>
       <h2 class="text-lg font-semibold mb-6">Shortened URLs history</h2>
       <ul>
         <li 
@@ -26,7 +33,8 @@
 import { ClipboardCheckIcon } from '@heroicons/vue/outline'
 
 const props = defineProps({
-  historyList: Object
+  historyList: Object,
+  isSidebarOpen: Boolean
 })
 </script>
 
@@ -40,4 +48,6 @@ const props = defineProps({
   transform: translateX(0rem);
   transition: all 0.3s ease-in-out;
 }
+
+
 </style>

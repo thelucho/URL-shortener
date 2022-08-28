@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white antialised rounded-2xl border shadow-x1 p-10 max-w-lg">
+  <div class="bg-white antialised rounded-2xl border shadow-x1 py-5 px-5 lg:py-10 lg:px-10 max-w-lg">
     <div class="flex flex-col items-center space-y-4">
       <Header />
       <form @submit.prevent="shorten">
@@ -40,9 +40,17 @@
   </div>
 
   <button
-    class="rounded px-4 py-2 text-sm border-2 border-slate-300 text-slate-400 hover:text-slate-500 hover:border-slate-400 active:border-slate-400  duration-300 mt-8"
+    class="flex justify-center align-center mx-auto text-center rounded px-4 py-2 text-sm border-2 border-slate-300 text-slate-400 hover:text-slate-500 hover:border-slate-400 active:border-slate-400 focus:border-slate-400 focus:outline-0 active:outline-0 duration-300 mt-8"
     @click="isSidebarOpen = !isSidebarOpen"
   >
+    <EyeOffIcon
+      v-if="isSidebarOpen"
+      class="mr-1 h-5 w-5 text-slate-400 hover:text-slate-400"
+    />
+    <EyeIcon
+      v-else
+      class="mr-1 h-5 w-5 text-slate-400 hover:text-slate-400"
+    />
     {{ textOpenSidebar }} history
   </button>
 
@@ -52,6 +60,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import axios from '../services/axios'
+import { EyeIcon, EyeOffIcon } from '@heroicons/vue/outline'
 
 import ClearButton from './ClearButton.vue'
 import Footer from './Footer.vue'

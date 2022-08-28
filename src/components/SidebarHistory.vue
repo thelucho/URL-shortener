@@ -19,9 +19,19 @@
           <span class="border-l-4 border-gray-300 mb-2 pl-3 py-1 text-slate-400">
             {{ item.old }}
           </span>
-          <span class="border-l-4 border-green-400 pl-3 py-1 font-medium flex align-center">
+          <span
+            class="border-l-4 border-green-400 pl-3 py-1 font-medium flex align-center"
+            @click="copyUrl(item.new)"
+          >
             {{ item.new }}
-            <ClipboardCheckIcon class="ml-2 h-5 w-5 text-slate-300 hover:text-slate-400 cursor-pointer" />
+            <CheckCircleIcon
+              v-if="copied && clicked === item.new"
+              class="ml-2 h-5 w-5 text-green-300 hover:text-slate-400 cursor-pointer"
+            />
+            <ClipboardCopyIcon
+              v-else
+              class="ml-2 h-5 w-5 text-slate-300 hover:text-slate-400 cursor-pointer"
+            />
           </span>
         </li>
       </ul>
@@ -30,12 +40,28 @@
 </template>
 
 <script setup>
-import { ClipboardCheckIcon } from '@heroicons/vue/outline'
+import { onUnmounted, ref } from 'vue'
+import { CheckCircleIcon, ClipboardCopyIcon } from '@heroicons/vue/outline'
 
 const props = defineProps({
   historyList: Object,
   isSidebarOpen: Boolean
 })
+
+const copied = ref(false)
+const clicked = ref('')
+
+const copyUrl = async (link) => {
+  copied.value = true
+  clicked.value = link
+  try {
+    await navigator.clipboard.writeText(link);
+  } catch($e) {
+    console.error($e);
+  }
+}
+
+onUnmounted(() => copied.value === false)
 </script>
 
 <style scoped>

@@ -7,7 +7,7 @@
           ref="myinput"
           type="url"
           placeholder="Paste your looooong URL..."
-          class="border-2 rounded-lg w-full h-12 px-4"
+          class="border-2 rounded-lg w-full h-12 px-4 bg-white"
           v-model="url"
         />
       
